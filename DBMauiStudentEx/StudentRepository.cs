@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace DBMauiStudentEx
 {
+    //THIS THING
     internal class StudentRepository
     {
         private readonly string _connectionString;
