@@ -2,23 +2,59 @@
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private StudentRepository repository;
+        private List<Student> students;
 
         public MainPage()
         {
             InitializeComponent();
+
+            repository = new StudentRepository();
+            LoadStudents();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void LoadStudents()
         {
-            count++;
+            students = repository.GetStudents();
+            studentListView.ItemsSource = students;
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+        private void AddStudent_Clicked(object sender, EventArgs e)
+        {
+            // Get student information from your input fields
+            Student newStudent = new Student
+            {
+                Name = nameEntry.Text,
+                Age = int.Parse(ageEntry.Text)
+            };
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            repository.AddStudent(newStudent);
+            LoadStudents();
+        }
+
+        private void UpdateStudent_Clicked(object sender, EventArgs e)
+        {
+            if (studentListView.SelectedItem != null)
+            {
+                // Get selected student and update their information
+                Student selectedStudent = (Student)studentListView.SelectedItem;
+                selectedStudent.Name = nameEntry.Text;
+                selectedStudent.Age = int.Parse(ageEntry.Text);
+
+                repository.UpdateStudent(selectedStudent);
+                LoadStudents();
+            }
+        }
+
+        private void DeleteStudent_Clicked(object sender, EventArgs e)
+        {
+            if (studentListView.SelectedItem != null)
+            {
+                // Get selected student and delete them
+                Student selectedStudent = (Student)studentListView.SelectedItem;
+                repository.DeleteStudent(selectedStudent.Id);
+                LoadStudents();
+            }
         }
     }
 
