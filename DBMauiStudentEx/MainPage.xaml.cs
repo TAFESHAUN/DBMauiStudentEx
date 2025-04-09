@@ -51,11 +51,32 @@
             if (studentListView.SelectedItem != null)
             {
                 // Get selected student and delete them
-                Student selectedStudent = (Student)studentListView.SelectedItem;
+                Student selectedStudent = (Student)studentListView.SelectedItem;// as Student;
                 repository.DeleteStudent(selectedStudent.Id);
                 LoadStudents();
             }
         }
+
+        //Navigate to StudentDetail page
+        private void studentListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (studentListView.SelectedItem != null)
+            {
+                //Student somestudent = studentListView.SelectedItem as Student;
+                Student selectedStudent = (Student)studentListView.SelectedItem;
+                Navigation.PushAsync(new StudentDetail(selectedStudent));
+            }
+        }
+
+        private async void GoTo_StudentDetails(object sender, EventArgs e)
+        {
+            if (studentListView.SelectedItem != null)
+            {
+                Student selectedStudent = (Student)studentListView.SelectedItem;
+                await Navigation.PushAsync(new StudentDetail(selectedStudent));
+            }
+        }
+
     }
 
 }
